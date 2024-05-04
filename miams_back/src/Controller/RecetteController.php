@@ -5,7 +5,10 @@ namespace App\Controller;
 
 use App\Entity\Recette;
 use App\Service\RecetteService;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -32,8 +35,10 @@ class RecetteController extends AbstractController
     #[Route('/{id}', methods:['GET'])]
     public function get($id): Response
     {
+        
         $recette = $this->recetteService->get($id);
         $data = $this->serializer->serialize($recette, 'json', ['groups' => 'getRecette']);
+        
         return new Response($data);
     }
 
@@ -57,6 +62,17 @@ class RecetteController extends AbstractController
     {
         $message = $this->recetteService->patch($id, $recette);
         return new Response($message);
+    }
+
+    #[Route('/{id}', methods:['DELETE'])]
+    public function remove(Recette $recette): Response
+    {
+        try {
+            $this->recetteService->delete($recette);
+            return new Response("La recette" .  $recette->getTitle() . "a bien été supprimé", Response::HTTP_OK);
+        }catch (Exception $e){
+            return new response ($e->getMessage(), Response::HTTP_NOT_FOUND);
+        }
     }
 
 

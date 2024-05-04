@@ -110,9 +110,19 @@ const Update = () => {
                   defaultValue={recettes.time}
                 />
               </div>
-              <label className="font-bold " htmlFor="title">
-                Categorie :
-              </label>
+              <label htmlFor="">Categorie </label>
+        {/* <select
+          value={categorie}
+          onChange={(e) => setCategorie(e.target.value)}
+        >
+          <option value="">Selectionnez une catégorie</option>
+          {categories.map((cat, index) => (
+            <option key={index} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select> */}
+
               <div>
                 <input
                   type="text"

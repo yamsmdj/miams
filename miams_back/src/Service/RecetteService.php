@@ -28,28 +28,30 @@ class RecetteService
     }
 
     public function create(Recette $recette)
-    {
-        $newRecette = new Recette();
-        $newRecette->setTitle($recette->getTitle());
-        $newRecette->setDescription($recette->getDescription());
-        $newRecette->setTime($recette->getTime());
-        $newRecette->setCreatedAt(new \DateTimeImmutable());
+{
+    $newRecette = new Recette();
+    $newRecette->setTitle($recette->getTitle());
+    $newRecette->setDescription($recette->getDescription());
+    $newRecette->setTime($recette->getTime());
+    $newRecette->setCreatedAt(new \DateTimeImmutable());
 
+    // Set the category
+    if ($recette->getCategorie()) {
         $categorieName = $recette->getCategorie()->getName();
         $categorie = $this->em->getRepository(Categorie::class)->findOneBy(['name' => $categorieName]);
-        $newRecette->setCategorie($this->em->getReference(Categorie::class, $categorie->getId()));
 
-        foreach ($recette->getIngredient() as $ingredientData) {
-            $ingredientName = $ingredientData->getName();
-            $ingredient = $this->em->getRepository(Ingredient::class)->findOneBy(['name' => $ingredientName]);
-
-            $newRecette->addIngredient($this->em->getReference(Ingredient::class, $ingredient->getId()));
+        if ($categorie) {
+            $newRecette->setCategorie($this->em->getReference(Categorie::class, $categorie->getId()));
+        } else {
+            throw new \Exception("La catégorie spécifiée n'existe pas.");
         }
-
-        $this->em->persist($newRecette);
-        $this->em->flush();
-        return $newRecette;
     }
+    $this->em->persist($newRecette);
+    $this->em->flush();
+
+    return $newRecette;
+}
+
 
     public function update(Recette $recette, $id): string
     {

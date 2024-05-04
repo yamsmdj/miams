@@ -65,9 +65,7 @@ class UserController extends AbstractController
 
 
         $response = new JsonResponse(['token' => $token]);
-        $response->headers->set('Access-Control-Allow-Origin', '*'); // Autoriser toutes les origines
-        $response->headers->set('Access-Control-Allow-Methods', 'POST'); // Autoriser uniquement les requêtes POST
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Autoriser les en-têtes nécessaires
+
         return $response;
     }
 }

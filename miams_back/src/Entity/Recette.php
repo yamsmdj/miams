@@ -37,7 +37,7 @@ class Recette
     private Collection $ingredient;
 
     #[ORM\ManyToOne(inversedBy: 'recettes')]
-    private ?chef $chef = null;
+    private ?Chef $chef = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -116,7 +116,7 @@ class Recette
         return $this;
     }
 
-    public function getChef(): ?chef
+    public function getChef(): ?Chef
     {
         return $this->chef;
     }

@@ -28,7 +28,7 @@ class Chef
     /**
      * @var Collection<int, Recette>
      */
-    #[ORM\OneToMany(targetEntity: Recette::class, mappedBy: 'chef')]
+    #[ORM\OneToMany(targetEntity: Recette::class, mappedBy: 'Chef')]
     private Collection $recettes;
 
     public function __construct()
