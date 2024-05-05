@@ -5,9 +5,11 @@ const Insert = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [time, setTime] = useState(5);
-  const [categorieId, setCategorieId] = useState("");
+  const [categorieId, setCategorieId] = useState(0);
   const [categories, setCategories] = useState([]);
-  const [created_at, setCreated_at] = useState(new Date());
+
+  
+
 
   useEffect(() => {
     axios
@@ -16,33 +18,42 @@ const Insert = () => {
         setCategories(res.data);
       })
       .catch((error) => {
-        console.error("Erreur lors de la recupéaration de la categorie", error);
+        console.error("Erreur lors de la récupération de la catégorie", error);
       });
   }, []);
 
   const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const selectedCategory = categories.find(cat => cat.id === categorieId);
 
-    console.log(title);
-    console.log(description);
-    console.log(time);
-    console.log(categorieId);
+    if (selectedCategory) {
 
-    const categorieName = categories.find(cat => cat.id === categorieId)?.name;
-    e.preventDefault()
-    axios 
-      .post("http://localhost:8000/api/recette/", {
-        title: title,
-        description: description,
-        time: time,
-        categorie: categorieName,
-        created_at: new Date().toISOString()
-      })
-      .then((res) => {
-        console.log("Recette ajouté avec succès !");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la création de la recette", error);
-      });
+      const categorieName = selectedCategory.name ;
+
+      console.log(title);
+      console.log(description);
+      console.log(time);
+      console.log(categorieName);
+
+      axios
+        .post("http://localhost:8000/api/recette/", {
+          title: title,
+          description: description,
+          time: time,
+          categorie: {
+            name: categorieName
+          },
+        })
+        .then((res) => {
+          console.log("Recette ajoutée avec succès !");
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la création de la recette", error);
+        });
+    } else {
+      console.error("Aucune catégorie sélectionnée");
+    }
   };
 
   return (
@@ -52,8 +63,7 @@ const Insert = () => {
       </h1>
       <form
         onSubmit={(e) => handleSubmit(e)}
-        className="flex flex-col items-center py-10 font-semibold "
-      >
+        className="flex flex-col items-center py-10 font-semibold ">
         <label htmlFor="">Nom de la recette </label>
         <div className="">
           <input type="text" onChange={(e) => setTitle(e.target.value)} />
@@ -75,11 +85,11 @@ const Insert = () => {
         <label htmlFor="">Categorie </label>
         <select
           value={categorieId}
-          onChange={(e) => setCategorieId(e.target.value)}
+          onChange={(e) => setCategorieId(parseInt(e.target.value))}
         >
-          <option >Selectionnez une catégorie</option>
-          {categories.map((cat, index) => (
-            <option key={index} value={cat.id}>
+          <option value="">Sélectionnez une catégorie</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
               {cat.name}
             </option>
           ))}
