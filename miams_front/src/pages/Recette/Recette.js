@@ -57,7 +57,16 @@ const Recette = () => {
             ))}
           </div>
         </div>
+        {console.log(recettes)}
+        <h1 className="font-bold text-xl">PRÉPARATION</h1>
+        { recettes.etapes?.map((step) => (
+          <div className="grid grid-cols-2 py-3 text-left w-11/12 border-y-2">
+          <h3 key={step.nEtape} className="font-bold text-lg pl-5">ETAPE {step.nEtape} : </h3>
+          <p>{step.description}</p>
+          </div>
+        ))}
       </div>
+
     </section>
   );
 };
