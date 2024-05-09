@@ -49,6 +49,9 @@ class Recette
     #[ORM\OneToMany(targetEntity: Etape::class, mappedBy: 'recette', cascade: ["remove"])]
     private Collection $etapes;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture = null;
+
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
@@ -173,6 +176,18 @@ class Recette
                 $etape->setRecette(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }

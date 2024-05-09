@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const Insert = () => {
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [time, setTime] = useState(5);
   const [categorieId, setCategorieId] = useState(0);
   const [etapes, setEtapes] = useState([{ n_etape: 1, description: "" }]);
   const [categories, setCategories] = useState([]);
+  const [picture, setPicture] = useState('')
   const [selectedImage, setSelectedImage] = useState(null);
+
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/categorie/")
@@ -34,6 +37,12 @@ const Insert = () => {
     }
   };
 
+  const handleImageSelect = (event) => {
+    const image = event.target.files[0];
+    setSelectedImage(image);
+    setPicture(image.name);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const selectedCategory = categories.find((cat) => cat.id === categorieId);
@@ -52,6 +61,7 @@ const Insert = () => {
             name: categorieName,
           },
           etapes: etapesToSend,
+          picture: picture,
         })
         .then((res) => {
           console.log("Recette ajoutée avec succès !");
@@ -119,8 +129,8 @@ const Insert = () => {
             name="myImage"
             className="bg-white"
             onChange={(event) => {
-              console.log(event.target.files[0]);
-              setSelectedImage(event.target.files[0]);
+              console.log("testestest : " , event.target.files[0].name);
+              handleImageSelect(event);
             }}
           />
           <p>(Attention : Nom recette = Nom image // type d'image = jpg // )</p>

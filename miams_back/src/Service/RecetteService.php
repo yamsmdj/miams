@@ -35,6 +35,7 @@ class RecetteService
         $newRecette->setDescription($recette->getDescription());
         $newRecette->setTime($recette->getTime());
         $newRecette->setCreatedAt(new \DateTimeImmutable());
+        $newRecette->setPicture($recette->getPicture());
 
 
         // Set the category
