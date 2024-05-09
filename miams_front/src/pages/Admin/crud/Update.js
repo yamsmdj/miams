@@ -9,6 +9,7 @@ const Update = () => {
   const [time, setTime] = useState(0);
   const [categorie, setCategorie] = useState("");
   const [description, setDescription] = useState("");
+  const [etapes, setEtapes] = useState([]);
 
   const { recetteId } = useParams();
   const { categorieId } = useParams();
@@ -51,7 +52,8 @@ const Update = () => {
         title: titleToSend,
         description: descriptionToSend,
         time: timeToSend,
-        categorie: categorieToSend
+        categorie: categorieToSend,
+        etapes: etapes,
       })
       .then((res) => {
         console.log("Mise à jour réussie !");

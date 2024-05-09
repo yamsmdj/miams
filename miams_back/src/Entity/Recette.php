@@ -16,11 +16,11 @@ class Recette
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getChef','getCategorie'])]
+    #[Groups(['getCategorie'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getCategorie', 'getChef', 'getIngredient'])]
+    #[Groups(['getCategorie','getIngredient','getEtape'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
@@ -36,8 +36,6 @@ class Recette
     #[Groups(['excludeIngredient'])]
     private Collection $ingredient;
 
-    #[ORM\ManyToOne(inversedBy: 'recettes')]
-    private ?Chef $chef = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -45,9 +43,16 @@ class Recette
     #[ORM\ManyToOne(inversedBy: 'Recette', cascade: ['persist'])]
     private ?Categorie $categorie = null;
 
+    /**
+     * @var Collection<int, Etape>
+     */
+    #[ORM\OneToMany(targetEntity: Etape::class, mappedBy: 'recette', cascade: ["remove"])]
+    private Collection $etapes;
+
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
+        $this->etapes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,17 +121,7 @@ class Recette
         return $this;
     }
 
-    public function getChef(): ?Chef
-    {
-        return $this->chef;
-    }
 
-    public function setChef(?Chef $chef): static
-    {
-        $this->chef = $chef;
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -148,6 +143,36 @@ class Recette
     public function setCategorie(?Categorie $categorie): static
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Etape>
+     */
+    public function getEtapes(): Collection
+    {
+        return $this->etapes;
+    }
+
+    public function addEtape(Etape $etape): static
+    {
+        if (!$this->etapes->contains($etape)) {
+            $this->etapes->add($etape);
+            $etape->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtape(Etape $etape): static
+    {
+        if ($this->etapes->removeElement($etape)) {
+            // set the owning side to null (unless already changed)
+            if ($etape->getRecette() === $this) {
+                $etape->setRecette(null);
+            }
+        }
 
         return $this;
     }

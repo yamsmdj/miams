@@ -4,7 +4,7 @@ import Footer from './Footer';
 
 const index = ({children}) => {
     return (
-        <div className=' h-screen'>
+        <div>
             <Navbar />
             {children}
             <Footer />

@@ -11,6 +11,8 @@ import Update from "./pages/Admin/crud/Update";
 import Insert from "./pages/Admin/crud/Insert";
 import { useEffect } from "react";
 import ChefInsert from "./pages/Admin/crud/ChefInsert";
+import Error404 from "./pages/Error404";
+import SearchResults from "./components/SearchResults";
 
 
 function App() {
@@ -24,7 +26,8 @@ function App() {
     <BrowserRouter>
       <Wrapper>
         <Routes>
-          <Route path="*" element={<Accueil />} />
+          <Route path="*" element={<Error404 />} />
+          <Route path="/" element={<Accueil />} />
           <Route path="/connexion" element={<Log />} />
           <Route path="/register" element={<Log />} />
           <Route path="/boutique" element={<Shop />} />
@@ -34,6 +37,7 @@ function App() {
           <Route path="/admin/update/:recetteId" element={<Update />} />
           <Route path="/admin/chefinsert" element={<ChefInsert />} />
           <Route path="/admin/insert" element={<Insert />} />
+          <Route path="/search" element={<SearchResults />} />
 
         </Routes>
       </Wrapper>

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Categorie;
+use App\Entity\Etape;
 use App\Entity\Ingredient;
 use App\Entity\Recette;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,6 +36,7 @@ class RecetteService
         $newRecette->setTime($recette->getTime());
         $newRecette->setCreatedAt(new \DateTimeImmutable());
 
+
         // Set the category
         if ($recette->getCategorie()) {
             $categorieName = $recette->getCategorie()->getName();
@@ -46,6 +48,16 @@ class RecetteService
                 throw new \Exception("La catégorie spécifiée n'existe pas.");
             }
         }
+        foreach ($recette->getEtapes() as $index => $etape) {
+            $newEtape = new Etape();
+            $newEtape->setDescription($etape->getDescription());
+            $newEtape->setNEtape($index + 1); // Vous attribuez le numéro d'étape
+            $newEtape->setRecette($newRecette);
+            $newRecette->addEtape($newEtape); // Supposons que vous ayez une méthode pour ajouter une étape à la recette
+            $this->em->persist($newEtape);
+        }
+        
+
         $this->em->persist($newRecette);
         $this->em->flush();
 

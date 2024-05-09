@@ -8,8 +8,9 @@ import setting from "../../assets/Icons/setting.svg";
 import MenuBurger from "../MenuBurger";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
+import SearchBar from "../SearchBar";
 
-const Navbar = () => {
+const Navbar = ({onSearch}) => {
   const token = localStorage.getItem("token");
   let roles = [];
 
@@ -39,18 +40,7 @@ const Navbar = () => {
                 <h1>Miam's</h1>
               </NavLink>
             </div>
-            <div className="relative hidden sm:block">
-              <input
-                type="search"
-                className=" border border-black bg-transparent px-32 py-3"
-                placeholder="Recherché une recette"
-              />
-              <img
-                src={Search}
-                alt="loupe"
-                className=" absolute m-auto top-2"
-              />
-            </div>
+            <SearchBar onSearch={onSearch} />
             <div className="flex items-center justify-evenly md:w-3/12 ">
               {roles.includes("ROLE_ADMIN") && (
                 <NavLink to="/admin/dashboard">

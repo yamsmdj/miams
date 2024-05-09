@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Recette;
+use App\Repository\RecetteRepository;
 use App\Service\RecetteService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,16 +30,15 @@ class RecetteController extends AbstractController
     #[Route('/', methods: ['GET'])]
     public function getAll(): Response
     {
-        return new Response($this->serializer->serialize($this->recetteService->getAll(), 'json', ['groups' => 'getRecette']));
-
+        return new Response($this->serializer->serialize($this->recetteService->getAll(), 'json', ['groups' => 'getRecette', 'getEtape']));
     }
-    #[Route('/{id}', methods:['GET'])]
+    #[Route('/{id}', methods: ['GET'])]
     public function get($id): Response
     {
-        
+
         $recette = $this->recetteService->get($id);
         $data = $this->serializer->serialize($recette, 'json', ['groups' => 'getRecette']);
-        
+
         return new Response($data);
     }
 
@@ -64,16 +64,22 @@ class RecetteController extends AbstractController
         return new Response($message);
     }
 
-    #[Route('/{id}', methods:['DELETE'])]
+    #[Route('/{id}', methods: ['DELETE'])]
     public function remove(Recette $recette): Response
     {
         try {
             $this->recetteService->delete($recette);
             return new Response("La recette" .  $recette->getTitle() . "a bien été supprimé", Response::HTTP_OK);
-        }catch (Exception $e){
-            return new response ($e->getMessage(), Response::HTTP_NOT_FOUND);
+        } catch (Exception $e) {
+            return new response($e->getMessage(), Response::HTTP_NOT_FOUND);
         }
     }
 
 
+    #[Route('/ingredient/{ingredientId}', methods: ['GET'])]
+    public function getRecipesByIngredient($ingredientId, RecetteRepository $recetteRepository): JsonResponse
+    {
+        $recettes = $recetteRepository->findRecettesByIngredient($ingredientId);
+        return $this->json($recettes, Response::HTTP_OK);
+    }
 }

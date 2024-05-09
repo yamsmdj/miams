@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : dim. 28 avr. 2024 à 13:55
+-- Généré le : lun. 06 mai 2024 à 21:45
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -46,32 +46,53 @@ INSERT INTO `categorie` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `chef`
+-- Structure de la table `doctrine_migration_versions`
 --
 
-DROP TABLE IF EXISTS `chef`;
-CREATE TABLE IF NOT EXISTS `chef` (
+DROP TABLE IF EXISTS `doctrine_migration_versions`;
+CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
+  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `executed_at` datetime DEFAULT NULL,
+  `execution_time` int DEFAULT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Déchargement des données de la table `doctrine_migration_versions`
+--
+
+INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
+('DoctrineMigrations\\Version20240420183909', '2024-05-06 21:11:22', 14),
+('DoctrineMigrations\\Version20240506211102', '2024-05-06 21:11:36', 61);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `etape`
+--
+
+DROP TABLE IF EXISTS `etape`;
+CREATE TABLE IF NOT EXISTS `etape` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `recette_id` int DEFAULT NULL,
+  `n_etape` int NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `IDX_285F75DD89312FE9` (`recette_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `chef`
+-- Déchargement des données de la table `etape`
 --
 
-INSERT INTO `chef` (`id`, `name`, `description`) VALUES
-(1, 'Philippe Etchebest', 'Philippe Etchebest, né le 2 décembre 1966 à Soissons, est un chef cuisinier et un animateur de télévision français. Depuis 2015, il est juré de Top Chef, et anime les émissions Objectif Top Chef, Cauchemar en cuisine et Cauchemar à l\'hôtel sur M6'),
-(2, 'Stéphanie Le Quellec', 'Stéphanie Le Quellec, née Lecocq le 6 décembre 1981 à Enghien-les-Bains est une chef cuisinière française doublement étoilée. Elle est vainqueur de la saison 2 de Top Chef sur M6 en 2011. Elle est une des rares femmes à avoir obtenu deux étoiles au guide Michelin'),
-(3, 'Cyril Lignac', 'Cyril Lignac est un chef cuisinier, pâtissier et animateur de télévision français, né le 5 novembre 1977 à Rodez. Il est chef et propriétaire des restaurants parisiens Le Chardenoux, Aux Prés, Bar des Prés, Dragon, Ischia et Le Bar. 2021 voit l’ouverture de son premier restaurant à l’étranger : Bar des Prés Mayfair'),
-(4, 'Johnatan Rose', 'Chef cuistot anciennement sur la cybertech il s\'est réorienter en faisant des trompes l\'oeil basé sur le boolean false ; '),
-(5, 'Guy Savoy', 'Guy Savoy, né le 24 juillet 1953 à Nevers, est un chef cuisinier français. Son restaurant, situé dans le 6ᵉ arrondissement de Paris, est doublement étoilé au Guide Michelin depuis 1985 et triplement étoilé de 2002 à 2022'),
-(6, 'Anne-Sophie Pic', 'Anne-Sophie Pic, née le 12 juillet 1969 à Valence, est une cheffe cuisinière et maître restauratrice française. Elle est propriétaire du restaurant gastronomique la Maison Pic à Valence.'),
-(7, 'Thierry Marx', 'Thierry Marx, né le 19 septembre 1959 à Paris, est un homme d\'affaires, et chef cuisinier français. Sa cuisine s\'inspire notamment de la gastronomie moléculaire. Ancien parachutiste au Liban, il exerce plusieurs métiers avant de se tourner vers la restauration'),
-(8, 'Alain Passard', 'Alain Passard, né le 4 août 1956 à La Guerche-de-Bretagne, est un chef cuisinier français, propriétaire du restaurant parisien trois étoiles L\'Arpège'),
-(9, 'Georges Blanc', 'Georges Blanc, né le 2 janvier 1943, à Bourg-en-Bresse dans l\'Ain, est un des chefs cuisiniers, restaurateurs et hôteliers français du village de Vonnas en plein cœur de la Bresse. Trois étoiles au Guide Michelin et 4 toques au Gault-Millau.'),
-(10, 'Yams', 'ceci est une description test');
+INSERT INTO `etape` (`id`, `recette_id`, `n_etape`, `description`) VALUES
+(1, 5, 1, 'Faire revenir gousses hachées d\'ail et les oignons émincés dans un peu d\'huile d\'olive.'),
+(2, 5, 2, 'Ajouter la carotte et la branche de céleri hachée puis la viande et faire revenir le tout.'),
+(3, 5, 3, 'Au bout de quelques minutes, ajouter le vin rouge. Laisser cuire jusqu\'à évaporation.'),
+(4, 5, 4, 'Ajouter la purée de tomates, l\'eau et les herbes. Saler, poivrer, puis laisser mijoter à feu doux 45 minutes.'),
+(5, 5, 5, 'Préparer la béchamel : faire fondre 100 g de beurre.'),
+(6, 5, 6, 'Remettre sur le feu et remuer avec un fouet jusqu\'à l\'obtention d\'un mélange bien lisse. '),
+(7, 5, 7, 'Déguster');
 
 -- --------------------------------------------------------
 
@@ -134,28 +155,53 @@ INSERT INTO `ingredient` (`id`, `name`) VALUES
 DROP TABLE IF EXISTS `recette`;
 CREATE TABLE IF NOT EXISTS `recette` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `chef_id` int DEFAULT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `time` int NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `categorie_id` int DEFAULT NULL,
+  `picture` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `IDX_49BB6390150A48F1` (`chef_id`),
   KEY `IDX_49BB6390BCF5E72D` (`categorie_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `recette`
 --
 
-INSERT INTO `recette` (`id`, `chef_id`, `title`, `description`, `time`, `created_at`, `categorie_id`) VALUES
-(1, NULL, 'Salade Cesar', 'Tres bonne pour l\'été fraiche et appetissante', 20, '2024-04-20 17:25:56', 1),
-(3, 1, 'La quiche lorraine', '\r\n\r\nMaintenant que vous maîtrisez la pâte brisée, je vous montre comment la garnir façon Lorraine avec du lard fumé et beaucoup de gruyère bien sûr !! Prêts à vous régaler ?!\r\n', 30, '2024-04-20 18:15:29', 1),
-(5, 10, 'Lasagnes à la bolognaise', ' la bolognaise est parfaite pour découvrir les légumineuses. Enrobées de sauce tomate, les lentilles se transforment en une sauce fondante et végétarienne ! »', 125, '2024-04-24 21:42:39', 2),
-(6, NULL, 'fondant au chocolat', '« Pour aller plus vite, pour faire fondre le chocolat et le beurre, je mets le tout dans un bol coupé en carrés au micro-ondes.', 40, '2024-04-24 21:47:29', 3),
-(7, NULL, 'Risotto aux champignons', 'Tres bonne pour l\'été fraiche et appetissante', 50, '2024-04-28 13:25:56', 2),
-(10, NULL, 'Meringue ', 'Cette recette est un miracle !', 5, '2024-04-28 13:51:44', 3);
+INSERT INTO `recette` (`id`, `title`, `description`, `time`, `created_at`, `categorie_id`, `picture`) VALUES
+(1, 'Salade Cesar', 'Tres bonne pour l\'été fraiche et appetissante', 20, '2024-04-20 17:25:56', 1, NULL),
+(3, 'La quiche lorraine', 'Maintenant que vous maîtrisez la pâte brisée, je vous montre comment la garnir façon Lorraine avec du lard fumé et beaucoup de gruyère bien sûr !! Prêts à vous régaler ?!\n', 30, '2024-04-20 18:15:29', 1, NULL),
+(5, 'Lasagnes à la bolognaise', ' la bolognaise est parfaite pour découvrir les légumineuses. Enrobées de sauce tomate, les lentilles se transforment en une sauce fondante et végétarienne ! »', 125, '2024-04-24 21:42:39', 2, NULL),
+(6, 'fondant au chocolat', '« Pour aller plus vite, pour faire fondre le chocolat et le beurre, je mets le tout dans un bol coupé en carrés au micro-ondes.', 40, '2024-04-24 21:47:29', 3, NULL),
+(7, 'Risotto aux champignons', 'Tres bonne pour l\'été fraiche et appetissante', 50, '2024-04-28 13:25:56', 2, NULL),
+(10, 'Meringue', 'Cette recette est un miracle !', 10, '2024-04-28 13:51:44', 3, NULL),
+(12, 'bouchra', 'test', 20, '2024-05-02 23:02:23', 1, NULL),
+(13, 'test', 'test', 20, '2024-05-03 09:24:03', NULL, NULL),
+(14, 'test2', 'test', 20, '2024-05-03 09:24:49', NULL, NULL),
+(15, 'lej', 'test', 20, '2024-05-03 11:08:17', NULL, NULL),
+(16, 'lej', 'test', 20, '2024-05-03 12:58:20', NULL, NULL),
+(17, 'lej', 'test', 20, '2024-05-03 12:58:32', NULL, NULL),
+(18, 'lej', 'test', 20, '2024-05-03 12:58:40', NULL, NULL),
+(19, 'lej', 'test', 20, '2024-05-03 12:59:33', NULL, NULL),
+(20, 'lej', 'test', 20, '2024-05-03 13:00:08', 2, NULL),
+(21, 'moha', 'test', 20, '2024-05-03 13:34:24', 2, NULL),
+(22, 'gg', 'oktest', 5, '2024-05-03 13:35:33', NULL, NULL),
+(23, 'Salade Cesar', 'Tres bonne pour l\'été fraiche et appetissante', 20, '2024-05-03 16:33:33', NULL, NULL),
+(24, 'Salade Cesar', 'Tres bonne pour l\'été fraiche et appetissante', 20, '2024-05-03 16:33:49', NULL, NULL),
+(25, 'Salade Cesar', 'Tres bonne pour l\'été fraiche et appetissante', 20, '2024-05-03 16:35:16', NULL, NULL),
+(26, 'Salade Cesar', 'Tres bonne pour l\'été fraiche et appetissante', 20, '2024-05-03 16:35:39', NULL, NULL),
+(27, 'Salade Cesar', 'Tres bonne pour l\'été fraiche et appetissante', 20, '2024-05-03 16:35:43', NULL, NULL),
+(53, 'rea', 'rea', 23, '2024-05-05 16:20:54', NULL, NULL),
+(54, 'dz', 'dz', -1, '2024-05-05 16:25:00', NULL, NULL),
+(55, 'dz', 'dz', 23, '2024-05-05 16:27:07', NULL, NULL),
+(56, 'dz', 'dz', 23, '2024-05-05 16:27:29', NULL, NULL),
+(57, 'dsdsds', 'dsdsd', 23, '2024-05-05 16:38:57', NULL, NULL),
+(58, 'wwww', 'wwww', 2, '2024-05-05 16:45:59', NULL, NULL),
+(59, 'wwwww', 'wwwwwww', 32, '2024-05-05 16:50:29', 2, NULL),
+(60, 'wwwww', 'wwwwwww', 32, '2024-05-05 16:50:46', 2, NULL),
+(61, 'wwwww', 'wwwwwww', 32, '2024-05-05 16:50:52', 3, NULL),
+(62, 'vwzdvwd', 'wwwwwww', 32, '2024-05-05 16:51:53', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -240,10 +286,15 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
 --
 
 --
+-- Contraintes pour la table `etape`
+--
+ALTER TABLE `etape`
+  ADD CONSTRAINT `FK_285F75DD89312FE9` FOREIGN KEY (`recette_id`) REFERENCES `recette` (`id`);
+
+--
 -- Contraintes pour la table `recette`
 --
 ALTER TABLE `recette`
-  ADD CONSTRAINT `FK_49BB6390150A48F1` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
   ADD CONSTRAINT `FK_49BB6390BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `categorie` (`id`);
 
 --
