@@ -20,20 +20,21 @@ class Recette
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getCategorie','getIngredient','getEtape'])]
+    #[Groups(['getCategorie','getIngredient','getEtape','getRecetteByIngredient'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['getRecetteByIngredient'])]
     private ?int $time = null;
 
     /**
      * @var Collection<int, ingredient>
      */
     #[ORM\ManyToMany(targetEntity: Ingredient::class, inversedBy: 'recettes', cascade: ['persist'])]
-    #[Groups(['excludeIngredient'])]
+    #[Groups(['getRecetteByIngredient', 'getRecetteByIngredient'])]
     private Collection $ingredient;
 
 
@@ -47,6 +48,7 @@ class Recette
      * @var Collection<int, Etape>
      */
     #[ORM\OneToMany(targetEntity: Etape::class, mappedBy: 'recette', cascade: ["remove"])]
+    #[Groups(['getRecetteByIngredient'])]
     private Collection $etapes;
 
     #[ORM\Column(length: 255, nullable: true)]

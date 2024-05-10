@@ -36,7 +36,7 @@ class Ingredient
     {
         return $this->id;
     }
-
+    #[Groups(['getRecetteByIngredient'])]
     public function getName(): ?string
     {
         return $this->name;

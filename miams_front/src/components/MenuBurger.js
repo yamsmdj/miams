@@ -9,6 +9,36 @@ const MenuBurger = () => {
     setIsOpen(!isOpen);
   };
 
+  // Tableau contenant les différentes catégories de recettes
+  const categories = [
+    {
+      title: "CATEGORIE DE RECETTES",
+      items: [
+        { label: "ENTRÉE", link: "/Entrée/1" },
+        { label: "PLATS", link: "/Plats/2" },
+        { label: "DESSERT", link: "/dessert/3" },
+        { label: "BOISSONS", link: "/boissons/4" }
+      ],
+      isFirstCategory: true
+    },
+    {
+      title: "INGREDIENTS",
+      items: [
+        { label: "VIANDES", link: "/viandes" },
+        { label: "POISSONS", link: "/poissons" },
+        { label: "FRUITS", link: "/fruits" },
+        { label: "LEGUMES", link: "/legumes" }
+      ]
+    },
+    {
+      title: "SHOP",
+      items: [
+        { label: "USTENSILES DE CUISINE", link: "/ustensiles" },
+        { label: "TENUES DE CUISINE", link: "/tenues" }
+      ]
+    }
+  ];
+
   return (
     <>
       <button
@@ -34,31 +64,15 @@ const MenuBurger = () => {
       {isOpen && (
         <div>
           <div className=" absolute flex flex-col lg:flex-row justify-around top-24 lg:top-36 p-12 bg-gray-300  md:w-1/2 ">
-            <RecetteCategorie 
-            title = "CATEGORIE DE RECETTES"
-            items={[
-              {label: "ENTRÉE", link: `/Entrée/1`},
-              {label: "PLATS", link: "/Plats/2"},
-              {label: "DESSERT", link: "/dessert/3"},
-              {label: "BOISSONS", link: "/boissons/4"}
-            ]} 
-            isFirstCategory = {true}
-            />
-            <RecetteCategorie
-            title = "INGREDIENTS"
-            items={[
-              {label: "VIANDES", link: "/viandes"},
-              {label: "POISSONS", link: "/poissons"},
-              {label: "FRUITS", link: "/fruits"},
-              {label: "LEGUMES", link: "/legumes"}
-            ]} />
-            <RecetteCategorie
-            title = "SHOP"
-            items={[
-              {label: "USTENSILES DE CUISINE", link: "/ustensiles"},
-              {label: "TENUES DE CUISINE", link: "/tenues"},
-            ]} />
-        </div>
+            {categories.map((category, index) => (
+              <RecetteCategorie
+                key={index}
+                title={category.title}
+                items={category.items}
+                isFirstCategory={category.isFirstCategory}
+              />
+            ))}
+          </div>
         </div>
       )}
     </>

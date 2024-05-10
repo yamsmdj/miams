@@ -6,6 +6,7 @@ use App\Entity\Categorie;
 use App\Entity\Etape;
 use App\Entity\Ingredient;
 use App\Entity\Recette;
+use App\Repository\RecetteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
@@ -27,6 +28,8 @@ class RecetteService
     {
         return $this->em->getRepository(Recette::class)->find($id);
     }
+
+ 
 
     public function create(Recette $recette)
     {

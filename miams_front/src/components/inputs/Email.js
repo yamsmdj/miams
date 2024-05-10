@@ -8,8 +8,8 @@ const Email = ( {setEmail} ) => {
     const [emailFocus, setEmailFocus] =useState(false);
 
     // useEffect(() => {
-    //     setValidEmail(emailRegex.test(email))
-    // }, [email, setValidEmail]);
+    //     setValidEmail(emailRegex.test(setemail))
+    // }, [setemail, setValidEmail]);
  
   return (
     <div>

@@ -7,7 +7,7 @@ import Logout from "../../assets/Icons/logout.svg";
 import setting from "../../assets/Icons/setting.svg";
 import MenuBurger from "../MenuBurger";
 import { jwtDecode } from "jwt-decode";
-import React from "react";
+import React, { useEffect } from "react";
 import SearchBar from "../SearchBar";
 
 const Navbar = ({onSearch}) => {
@@ -25,6 +25,7 @@ const Navbar = ({onSearch}) => {
   };
 
   let location = useLocation();
+
 
   return (
     <>

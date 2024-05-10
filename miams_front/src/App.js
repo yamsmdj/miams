@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import ChefInsert from "./pages/Admin/crud/ChefInsert";
 import Error404 from "./pages/Error404";
 import SearchResults from "./components/SearchResults";
+import RecetteByIngredient from "./pages/Recette/RecetteByIngredient";
 
 
 function App() {
@@ -32,7 +33,8 @@ function App() {
           <Route path="/register" element={<Log />} />
           <Route path="/boutique" element={<Shop />} />
           <Route path="/:categorieName/:categorieId" element={<Categorie />} />
-          <Route path="/recette/:recetteId" element={<Recette />} />
+          <Route path="/recette/title/:recetteTitle" element={<Recette />} />
+          <Route path="/recette/ingredient/:ingredientName" element={<RecetteByIngredient />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/update/:recetteId" element={<Update />} />
           <Route path="/admin/chefinsert" element={<ChefInsert />} />

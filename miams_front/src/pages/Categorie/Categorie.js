@@ -5,7 +5,6 @@ import axios from "axios";
 const Categorie = () => {
   const [categorie, setCategorie] = useState([]);
   const { categorieId } = useParams();
-  const { chefId } = useParams();
 
 
   useEffect(() => {
@@ -20,7 +19,7 @@ const Categorie = () => {
           error
         );
       });
-  }, []);
+  }, [categorieId]);
   return (
     <div>
       <section>
@@ -31,7 +30,7 @@ const Categorie = () => {
             {categorie.recette?.map((recette, index) => (
               <div key={recette.id}>
                 <p className="mt-4" >{recette.title}</p>
-                <NavLink to={`/recette/${recette.id}`}>
+                <NavLink to={`/recette/title/${recette.title.toLowerCase().replace(/\s+/g,"_")}`}>
                   <img
                     src={`/assets/recettes/${recette.title.replace(/\s+/g,"_")}.jpg`}
                     alt={categorie.title}

@@ -20,7 +20,7 @@ const Cookie = () => {
   const handleHidden = () => {
     setIsHidden(true);
   };
-console.log(isHidden);
+// console.log(isHidden);
   return (
     <>
     {!isHidden &&  

@@ -21,13 +21,28 @@ class RecetteRepository extends ServiceEntityRepository
         parent::__construct($registry, Recette::class);
     }
 
-    public function findRecettesByIngredient($ingredientId){
+    /**
+     * @return Recette[]
+     */
+    public function findRecettesByIngredient($ingredientName){
         return $this->createQueryBuilder('r')
-        ->innerJoin('r.ingredients', 'i')
-        ->where('i.id = :ingredientId')
-        ->setParameter('ingredientId', $ingredientId)
+        ->innerJoin('r.ingredient', 'i')
+        ->where('LOWER(i.name) LIKE :ingredientName')
+        ->setParameter('ingredientName','%' . $ingredientName . '%')
         ->getQuery()
         ->getResult();
+    }
+
+    
+    public function findRecetteByTitle($title)
+    {
+        $title = str_replace(' ', '_', $title);
+
+        return $this->createQueryBuilder('r')
+            ->where('r.title LIKE :title')
+            ->setParameter('title', '%'.$title.'%')
+            ->getQuery()
+            ->getResult();
     }
 
 }

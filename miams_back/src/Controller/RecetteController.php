@@ -76,10 +76,19 @@ class RecetteController extends AbstractController
     }
 
 
-    #[Route('/ingredient/{ingredientId}', methods: ['GET'])]
-    public function getRecipesByIngredient($ingredientId, RecetteRepository $recetteRepository): JsonResponse
+    #[Route('/ingredient/{ingredientName}', methods: ['GET'])]
+    public function getRecipesByIngredient($ingredientName, RecetteRepository $recetteRepository): Response
     {
-        $recettes = $recetteRepository->findRecettesByIngredient($ingredientId);
-        return $this->json($recettes, Response::HTTP_OK);
+        $recettes = $recetteRepository->findRecettesByIngredient($ingredientName);
+        $data = $this->serializer->serialize($recettes, 'json', ['groups' => 'getRecetteByIngredient']);
+        return new Response($data, Response::HTTP_OK);
+    }
+
+    #[Route('/title/{title}', methods:['GET'])]
+    public function getByTitle( $title ,RecetteRepository $recetteRepository): Response
+    {
+        $recette = $recetteRepository->findRecetteByTitle($title);
+        $data = $this->serializer->serialize($recette, 'json' , ['groups' => 'getRecetteByIngredient']);
+        return new Response($data , Response::HTTP_OK);
     }
 }

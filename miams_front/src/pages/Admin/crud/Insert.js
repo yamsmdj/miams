@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Insert = () => {
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [time, setTime] = useState(5);
   const [categorieId, setCategorieId] = useState(0);
   const [etapes, setEtapes] = useState([{ n_etape: 1, description: "" }]);
   const [categories, setCategories] = useState([]);
-  const [picture, setPicture] = useState('')
+  const [picture, setPicture] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -37,14 +38,21 @@ const Insert = () => {
     }
   };
 
-  const handleImageSelect = (event) => {
-    const image = event.target.files[0];
-    setSelectedImage(image);
-    setPicture(image.name);
+  const converToBase64 = (e) => {
+    console.log(e);
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      console.log(reader.result);
+      setSelectedImage(reader.result);
+    };
+    reader.onerror = (error) => {
+      console.log("Error : ", error);
+    };
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const selectedCategory = categories.find((cat) => cat.id === categorieId);
     if (selectedCategory) {
       const categorieName = selectedCategory.name;
@@ -52,27 +60,61 @@ const Insert = () => {
         n_etape: index + 1, // Numéro d'étape
         description: etape.description,
       }));
-      axios
-        .post("http://localhost:8000/api/recette/", {
-          title: title,
-          description: description,
-          time: time,
-          categorie: {
-            name: categorieName,
-          },
-          etapes: etapesToSend,
-          picture: picture,
-        })
-        .then((res) => {
-          console.log("Recette ajoutée avec succès !");
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la création de la recette", error);
-        });
+      const formData = new FormData();
+      formData.append("image", selectedImage.split(",")[1]);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/upload-image",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (response.status === 201) {
+          console.log("Image uploaded successfully");
+
+          const imagePath = response.data;
+          setPicture(imagePath);
+          console.log(imagePath);
+
+          axios
+            .post(`http://localhost:8000/api/recette/`, {
+              title: title,
+              description: description,
+              time: time,
+              categorie: {
+                name: categorieName,
+              },
+              etapes: etapesToSend,
+              picture: imagePath
+            })
+            .then((res) => {
+              console.log("Produit créé avec succès !");
+              navigate("/admin/dashboard");
+            })
+            .catch((error) => {
+              console.error(
+                "Une erreur s'est produite lors de la création du produit : ",
+                error
+              );
+            });
+        } else {
+          console.error("Failed to upload image");
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
     } else {
-      console.error("Aucune catégorie sélectionnée");
+      console.error(
+        "Veuillez sélectionner une catégorie, une œuvre et un type"
+      );
     }
   };
+
   const handleAddEtape = () => {
     const newEtapeNumber = etapes.length + 1;
     setEtapes([...etapes, { n_etape: newEtapeNumber, description: "" }]);
@@ -128,31 +170,33 @@ const Insert = () => {
             type="file"
             name="myImage"
             className="bg-white"
-            onChange={(event) => {
-              console.log("testestest : " , event.target.files[0].name);
-              handleImageSelect(event);
-            }}
+            onChange={converToBase64}
           />
+          <img width={100} height={100} src={selectedImage} />
           <p>(Attention : Nom recette = Nom image // type d'image = jpg // )</p>
         </div>
         <div className="flex flex-wrap w-1/2 justify-around mx-auto">
-        {etapes.map((etape, index) => (
-          <div key={index} className="my-2">
-            <div className="flex flex-col text-center">
-              <label>Étape {index + 1}</label>
-              <textarea
-                type="text"
-                value={etape.description}
-                onChange={(e) => handleEtapeChange(index, e.target.value)}
-              />
+          {etapes.map((etape, index) => (
+            <div key={index} className="my-2">
+              <div className="flex flex-col text-center">
+                <label>Étape {index + 1}</label>
+                <textarea
+                  type="text"
+                  value={etape.description}
+                  onChange={(e) => handleEtapeChange(index, e.target.value)}
+                />
+                
+              </div>
             </div>
-          </div>
-        ))}</div>
+          ))}
+        </div>
         <button
           type="button"
           onClick={handleAddEtape}
           className=" bg-white rounded-xl p-2  w-11"
-        > +
+        >
+          {" "}
+          +
         </button>
         <button
           type="submit"

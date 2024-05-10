@@ -17,9 +17,11 @@ class Etape
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['getRecetteByIngredient'])]
     private ?int $n_etape = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['getRecetteByIngredient'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'etapes')]

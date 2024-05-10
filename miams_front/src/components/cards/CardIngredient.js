@@ -26,8 +26,8 @@ const CardIngredient = () => {
         <div className="grid grid-cols-3 md:grid-cols-5  lg:grid-cols-8 w-10/12 m-auto">
           {ingredients ? (
             ingredients.slice(0,8).map((ingredient, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <NavLink to={`/ingredient/${ingredient.name}`}>
+              <div key={index} className="flex flex-col items-center transform hover:scale-150 duration-500">
+                <NavLink to={`/recette/ingredient/${ingredient.name}`}>
                   {ingredient.name ? (
                     <img
                       src={`assets/ingredients/fruitslegumes/${ingredient.name.replace(/\s+/g, "_")}.jpg`}
