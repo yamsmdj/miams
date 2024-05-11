@@ -93,15 +93,21 @@ class RecetteService
             return "Le Recette avec l'id {$id} n'a pas pu être mis à jour car il n'existe pas.";
         }
     }
-    public function patch(int $id, Recette $oeuvre): string
+    public function patch(int $id, Recette $recette): string
     {
         $existingRecette = $this->em->getRepository(Recette::class)->find($id);
 
         if ($existingRecette) {
-            $existingRecette->setTitle($oeuvre->getTitle() ?? $existingRecette->getTitle());
-            $existingRecette->setDescription($oeuvre->getDescription() ?? $existingRecette->getDescription());
-            $existingRecette->setTime($oeuvre->getTime() ?? $existingRecette->getTime());
-            $existingRecette->setPicture($oeuvre->getPicture() ?? $existingRecette->getPicture());
+            $existingRecette->setTitle($recette->getTitle() ?? $existingRecette->getTitle());
+            $existingRecette->setDescription($recette->getDescription() ?? $existingRecette->getDescription());
+            $existingRecette->setTime($recette->getTime() ?? $existingRecette->getTime());
+            $existingRecette->setPicture($recette->getPicture() ?? $existingRecette->getPicture());
+
+            $existingRecette->clearEtapes();
+
+            foreach ($recette->getEtapes() as $etape) {
+                $existingRecette->addEtape($etape);
+            }
 
             $this->em->flush();
 

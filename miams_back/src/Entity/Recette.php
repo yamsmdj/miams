@@ -47,7 +47,7 @@ class Recette
     /**
      * @var Collection<int, Etape>
      */
-    #[ORM\OneToMany(targetEntity: Etape::class, mappedBy: 'recette', cascade: ["remove"])]
+    #[ORM\OneToMany(targetEntity: Etape::class, mappedBy: 'recette',  cascade: ["persist", "remove"])]
     #[Groups(['getRecetteByIngredient'])]
     private Collection $etapes;
 
@@ -181,6 +181,10 @@ class Recette
         }
 
         return $this;
+    }
+    public function clearEtapes(): void
+    {
+        $this->etapes->clear();
     }
 
     public function getPicture(): ?string
