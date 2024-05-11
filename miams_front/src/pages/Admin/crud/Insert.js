@@ -24,19 +24,19 @@ const Insert = () => {
       });
   }, []);
 
-  const handleImageUpload = async (selectedImage) => {
-    try {
-      const formData = new FormData();
-      formData.append("image", selectedImage);
+  // const handleImageUpload = async (selectedImage) => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("image", selectedImage);
 
-      await axios.post("http://localhost:8000/upload-image", formData);
-      console.log("Image uploaded successfully");
-      // Affichez un message de confirmation à l'utilisateur
-    } catch (error) {
-      console.error("Failed to upload image:", error);
-      // Affichez un message d'erreur à l'utilisateur
-    }
-  };
+  //     await axios.post("http://localhost:8000/upload-image", formData);
+  //     console.log("Image uploaded successfully");
+  //     // Affichez un message de confirmation à l'utilisateur
+  //   } catch (error) {
+  //     console.error("Failed to upload image:", error);
+  //     // Affichez un message d'erreur à l'utilisateur
+  //   }
+  // };
 
   const converToBase64 = (e) => {
     console.log(e);
@@ -172,9 +172,9 @@ const Insert = () => {
             className="bg-white"
             onChange={converToBase64}
           />
-          <img width={100} height={100} src={selectedImage} />
           <p>(Attention : Nom recette = Nom image // type d'image = jpg // )</p>
         </div>
+          {selectedImage === null ? "" : <img width={100} height={100} src={selectedImage} />}
         <div className="flex flex-wrap w-1/2 justify-around mx-auto">
           {etapes.map((etape, index) => (
             <div key={index} className="my-2">
@@ -194,13 +194,10 @@ const Insert = () => {
           type="button"
           onClick={handleAddEtape}
           className=" bg-white rounded-xl p-2  w-11"
-        >
-          {" "}
-          +
+        >  +
         </button>
         <button
           type="submit"
-          onClick={() => handleImageUpload(selectedImage)}
           className=" bg-green-600 rounded-xl p-2 mt-6"
         >
           Ajouter la recette

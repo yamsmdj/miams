@@ -52,6 +52,7 @@ class Recette
     private Collection $etapes;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['getRecetteByIngredient', 'getRecetteByIngredient'])]
     private ?string $picture = null;
 
     public function __construct()

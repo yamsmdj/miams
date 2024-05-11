@@ -9,6 +9,7 @@ const Update = () => {
   const [time, setTime] = useState(0);
   const [categorie, setCategorie] = useState("");
   const [description, setDescription] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
   const [etapes, setEtapes] = useState([]);
 
   const { recetteId } = useParams();
@@ -34,6 +35,13 @@ const Update = () => {
       });
   }, []);
   // console.log('id' , recetteId);
+  const converToBase64 = (e) => {
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      setSelectedImage(reader.result);
+    };
+  };
 
   const handleValidation = () => {
     console.log(("titre", title));
@@ -42,29 +50,53 @@ const Update = () => {
     console.log(("categorie", categorie));
 
     // Utilise les valeur actuelle de recettes.x si x est vide
-    const titleToSend = title || recettes.title; 
-    const descriptionToSend = description || recettes.description; 
-    const timeToSend = time || recettes.time; 
-    const categorieToSend = categorie || recettes.categorie.name; 
+    const titleToSend = title || recettes.title;
+    const descriptionToSend = description || recettes.description;
+    const timeToSend = time || recettes.time;
+    const categorieToSend = categorie || recettes.categorie.name;
+
+    let formData = new FormData();
+    if (selectedImage) {
+      formData.append("image", selectedImage.split(",")[1]);
+    }
 
     axios
-      .patch(`http://localhost:8000/api/recette/${recetteId}`, {
-        title: titleToSend,
-        description: descriptionToSend,
-        time: timeToSend,
-        categorie: categorieToSend,
-        etapes: etapes,
+      .post("http://localhost:8000/upload-image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
-      .then((res) => {
-        console.log("Mise à jour réussie !");
-        // Définir le message flash
-        // setFlashMessage("Mise à jour réussie !");
-        // Redirection vers la page de tableau de bord après la modification réussie
-        redirect("/dashboard");
-        console.log("Mise à jour réussie !");
+      .then((response) => {
+        if (response.status === 201) {
+          console.log("Image uploaded successfully");
+          const imagePath = response.data;
+          console.log(imagePath);
+
+          axios
+            .patch(`http://localhost:8000/api/recette/${recetteId}`, {
+              title: titleToSend,
+              description: descriptionToSend,
+              time: timeToSend,
+              categorie: categorieToSend,
+              etapes: etapes,
+              picture: imagePath, // Mettez à jour l'image avec le nouveau chemin
+            })
+            .then((res) => {
+              console.log("Mise à jour réussie !");
+              // Définir le message flash
+              // setFlashMessage("Mise à jour réussie !");
+              // Redirection vers la page de tableau de bord après la modification réussie
+              redirect("/dashboard");
+            })
+            .catch((error) => {
+              console.error("Erreur lors de la mise à jour : ", error);
+            });
+        } else {
+          console.error("Failed to upload image");
+        }
       })
       .catch((error) => {
-        console.error("Erreur lors de la mise à jour : ", error);
+        console.error("Error uploading image:", error);
       });
   };
 
@@ -112,8 +144,18 @@ const Update = () => {
                   defaultValue={recettes.time}
                 />
               </div>
+              <label htmlFor="">Choisir une nouvelle image</label>
+              <input
+                type="file"
+                name="myImage"
+                className="bg-white"
+                onChange={converToBase64}
+              />
+              {selectedImage && (
+                <img width={100} height={100} src={selectedImage} />
+              )}
               <label htmlFor="">Categorie </label>
-        {/* <select
+              {/* <select
           value={categorie}
           onChange={(e) => setCategorie(e.target.value)}
         >

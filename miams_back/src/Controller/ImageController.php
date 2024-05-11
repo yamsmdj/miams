@@ -20,10 +20,10 @@ class ImageController extends AbstractController
             $imageData = base64_decode($base64Image);
 
             // Générer un nom de fichier unique
-            $fileName = "recette" . uniqid() . '.png';
+            $fileName = "recettes" . uniqid() . '.png';
 
             // Chemin du répertoire de destination
-            $destinationDirectory = $this->getParameter('kernel.project_dir') . '/public/assets/recettes/' .  'recette';
+            $destinationDirectory = $this->getParameter('kernel.project_dir') . '/public/assets/recettes/' ;
 
             // Créer le répertoire s'il n'existe pas
             if (!file_exists($destinationDirectory)) {
@@ -50,29 +50,27 @@ class ImageController extends AbstractController
     #[Route('/api/assets/recettes/{path}', methods: ['GET'])]
     public function getImage(string $path): Response
     {
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/assets/recettes/';
-
-        // Utilisation de preg_split avec une expression régulière
-        $parts = preg_split('/\d/', $path, 2);
-        $filePath .= $parts[0] . '/' . $path;
-
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/assets/recettes/' . $path;
+    
         // Vérifier si le fichier existe
         if (!file_exists($filePath) || !is_readable($filePath)) {
-            return new Response('Fichier non trouvé', 404);
+            return new Response('Fichier non trouvé ptit', 404);
         }
-
+    
         // Récupérer le type MIME de l'image
         $mimeType = mime_content_type($filePath);
-
+    
         // Lire le contenu du fichier
         $content = file_get_contents($filePath);
-
+    
         // Créer une réponse avec le contenu et le type MIME
         $response = new Response($content);
         $response->headers->set('Content-Type', $mimeType);
-
+    
+        // Retourner la réponse construite
         return $response;
     }
+    
 }
 
 

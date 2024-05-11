@@ -107,11 +107,15 @@ const SearchResults = () => {
           {recettesAffichees.length > 0 ? (
             recettesAffichees.map((recette, index) => (
               <div key={index} className="flex flex-col justify-around w-full px-6 pb-6 rounded-xl hover:bg-orange-500 hover:text-white ">
+                {console.log(recette)}
                 <p>
                   <strong>{recette.title}</strong>
                 </p>
                 <div className="">
-                  <NavLink to={`/recette/${recette.name}`}>
+                  <NavLink to={`/recette/title/${recette.title.replace(
+                          /\s+/g,
+                          "_"
+                        )}`}>
                     {recette.title ? (
                       <img
                         src={`/assets/recettes/${recette.title.replace(

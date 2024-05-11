@@ -79,7 +79,8 @@ class RecetteService
                 $existingRecette
                     ->setTitle($recette->getTitle())
                     ->setDescription($recette->getDescription())
-                    ->setTime($recette->getTime());
+                    ->setTime($recette->getTime())
+                    ->setPicture($recette->getPicture());
 
                 $this->em->flush();
 
@@ -100,6 +101,7 @@ class RecetteService
             $existingRecette->setTitle($oeuvre->getTitle() ?? $existingRecette->getTitle());
             $existingRecette->setDescription($oeuvre->getDescription() ?? $existingRecette->getDescription());
             $existingRecette->setTime($oeuvre->getTime() ?? $existingRecette->getTime());
+            $existingRecette->setPicture($oeuvre->getPicture() ?? $existingRecette->getPicture());
 
             $this->em->flush();
 
