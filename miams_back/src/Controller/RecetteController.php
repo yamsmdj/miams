@@ -8,12 +8,14 @@ use App\Repository\RecetteRepository;
 use App\Service\RecetteService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+
 
 #[Route('/api/recette')]
 class RecetteController extends AbstractController
@@ -28,8 +30,13 @@ class RecetteController extends AbstractController
     }
 
     #[Route('/', methods: ['GET'])]
+
     public function getAll(): Response
     {
+        // // if (!$this->isGranted('ROLE_ADMIN')) {
+        // //     dd($this->json($this->getUser()));
+        // // }
+        // dd($this->getUser());
         return new Response($this->serializer->serialize($this->recetteService->getAll(), 'json', ['groups' => 'getRecette', 'getEtape']));
     }
     #[Route('/{id}', methods: ['GET'])]
@@ -43,6 +50,7 @@ class RecetteController extends AbstractController
     }
 
     #[Route('/', methods: ['POST'])]
+
     public function create(#[MapRequestPayload()] Recette $recette): Response
     {
         $recette = $this->recetteService->create($recette);
@@ -84,11 +92,26 @@ class RecetteController extends AbstractController
         return new Response($data, Response::HTTP_OK);
     }
 
-    #[Route('/title/{title}', methods:['GET'])]
-    public function getByTitle( $title ,RecetteRepository $recetteRepository): Response
+    #[Route('/title/{title}', methods: ['GET'])]
+    public function getByTitle($title, RecetteRepository $recetteRepository): Response
     {
         $recette = $recetteRepository->findRecetteByTitle($title);
-        $data = $this->serializer->serialize($recette, 'json' , ['groups' => 'getRecetteByIngredient']);
-        return new Response($data , Response::HTTP_OK);
+        $data = $this->serializer->serialize($recette, 'json', ['groups' => 'getRecetteByIngredient']);
+        return new Response($data, Response::HTTP_OK);
+    }
+
+    #[Route('/admin', methods: ['GET'])]
+    public function getAllAdmin(): Response
+    {
+        return new Response($this->serializer->serialize($this->recetteService->getAll(), 'json', ['groups' => 'getRecette', 'getEtape']));
+    }
+    #[Route('/admin/{id}', methods: ['GET'])]
+    public function getAdmin($id): Response
+    {
+
+        $recette = $this->recetteService->get($id);
+        $data = $this->serializer->serialize($recette, 'json', ['groups' => 'getRecette']);
+
+        return new Response($data);
     }
 }

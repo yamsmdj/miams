@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const ConfirmPassword = ({valuePwd, handlePasswordChange}) => {
 
     const [confirmPwd, setConfirmPwd] = useState('');
     const [PwdFocus ,setPwdFocus] = useState(false);
 
-
+console.log(confirmPwd, PwdFocus);
     return (
         <div>
             <label htmlFor="mdp" className='p-2'>Confirmation du mots de passe</label>

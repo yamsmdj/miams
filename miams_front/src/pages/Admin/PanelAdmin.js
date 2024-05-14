@@ -5,14 +5,15 @@ import Delete from "../../assets/Icons/delete.svg";
 // import Check from "../../assets/Icons/check.svg";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const PanelAdmin = () => {
   const [recettes, setRecettes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [flashMessage, setFlashMessage] = useState("")
+
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [choiceDelete, setChoiceDelete] = useState(null)
-  const recettes_id = recettes.map((rec) => (rec.id))
+  // const recettes_id = recettes.map((rec) => (rec.id))
 
 
   useEffect(() => {
@@ -58,43 +59,56 @@ const PanelAdmin = () => {
           setConfirmDelete(false);
         });
   };
+  const token = localStorage.getItem("token");
+  let roles = [];
 
-  return (
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    roles = decodedToken.roles;
+  }
+console.log(roles);
+console.log(confirmDelete);
+return (
+  roles.includes("ROLE_ADMIN") ? (
     <section className="flex w-full">
       <div className="flex justify-around w-10/12 mx-auto items-center">
-        <div className="flex flex-col w-8/12 ">
-          <div className="flex flex-row-reverse justify-between items-center py-5 ">
+        <div className="flex flex-col w-8/12">
+          <div className="flex flex-row-reverse justify-between items-center py-5">
             <NavLink to="/admin/insert/">
-              <button className=" bg-green-500 rounded-xl p-3">
-                Ajouter une recettes
+              <button className="bg-green-500 rounded-xl p-3">
+                Ajouter une recette
               </button>
             </NavLink>
-            <h1>Liste des recettes : </h1>
+            <h1>Liste des recettes :</h1>
           </div>
           <ul className="grid grid-cols-5 p-2 bg-gray-500 text-white text-center font-semibold uppercase rounded-lg">
             <li>Image</li>
-            <li>Categorie</li>
+            <li>Catégorie</li>
             <li>Recettes</li>
             <li>Modifier</li>
             <li>Supprimer</li>
           </ul>
           {loading ? (
-            <p>chargement...</p>
+            <p>Chargement...</p>
           ) : (
             <>
               {recettes.map((recette) => (
                 <ul
-                className="grid grid-cols-5  py-3 items-center even:bg-slate-300"
-                key={recette.id}
+                  className="grid grid-cols-5 py-3 items-center even:bg-slate-300"
+                  key={recette.id}
                 >
-                <li>
-                  <img src={`/assets/recettes/${recette.title?.replace(/\s+/g,"_")}.jpg`} alt={`image de ${recette.title}`} className="w-16 mx-auto" />
-                </li>
-                    <li className="flex items-center justify-center  ">
-                      {recette.categorie.name}
-                    </li>
+                  <li>
+                    <img
+                      src={`http://localhost:8000/api/assets/recettes/${recette.picture}`}
+                      alt={`${recette.title}`}
+                      className="w-16 mx-auto"
+                    />
+                  </li>
+                  <li className="flex items-center justify-center">
+                    {recette.categorie.name}
+                  </li>
                   <NavLink to={`/recette/${recette.id}`}>
-                    <li className="flex items-center justify-center  ">
+                    <li className="flex items-center justify-center">
                       {recette.title}
                     </li>
                   </NavLink>
@@ -103,11 +117,8 @@ const PanelAdmin = () => {
                       <img src={Update} alt="" className="mx-auto" />
                     </li>
                   </NavLink>
-
-
-
                   <li>
-                  {choiceDelete && choiceDelete.id === recette.id ? (
+                    {choiceDelete && choiceDelete.id === recette.id ? (
                       <div className="text-center">
                         <p>Confirmer</p>
                         <button onClick={handleConfirmDelete}>Confirmer</button>
@@ -115,17 +126,12 @@ const PanelAdmin = () => {
                       </div>
                     ) : (
                       <div className="text-center">
-                        {/* {console.log(recette.id)} */}
                         <button onClick={() => handleDeleteClick(recette)}>
-                          <img src={Delete} alt="suppression" />
+                          <img src={Delete} alt="Suppression" />
                         </button>
                       </div>
                     )}
                   </li>
-
-
-
-                  
                 </ul>
               ))}
             </>
@@ -133,7 +139,9 @@ const PanelAdmin = () => {
         </div>
       </div>
     </section>
-  );
-};
+  ) : (
+    <p>Vous n'avez pas les droits nécessaires pour accéder à cette page.</p>
+  )
+);}
 
 export default PanelAdmin;

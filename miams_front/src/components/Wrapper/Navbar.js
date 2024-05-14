@@ -1,23 +1,27 @@
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../../assets/Icons/Logo.svg";
 import Connexion from "../../assets/Icons/user.svg";
-import Search from "../../assets/Icons/search.svg";
 import Shop from "../../assets/Icons/shop.svg";
 import Logout from "../../assets/Icons/logout.svg";
 import setting from "../../assets/Icons/setting.svg";
 import MenuBurger from "../MenuBurger";
 import { jwtDecode } from "jwt-decode";
-import React, { useEffect } from "react";
-import SearchBar from "../SearchBar";
+import React from "react";
 
-const Navbar = ({onSearch}) => {
+
+const Navbar = () => {
+  
   const token = localStorage.getItem("token");
   let roles = [];
+  let email = '';
+
 
   if (token) {
     const decodedToken = jwtDecode(token);
     roles = decodedToken.roles;
+    email = decodedToken.username;
   }
+let username = email.split('@')[0];
 
   const logout = () => {
     localStorage.clear();
@@ -25,6 +29,8 @@ const Navbar = ({onSearch}) => {
   };
 
   let location = useLocation();
+
+
 
 
   return (
@@ -35,13 +41,16 @@ const Navbar = ({onSearch}) => {
             <div>
               <MenuBurger />
             </div>
+            {token &&
+            <p>Bienvenu <strong>{username}</strong> </p>
+            }
             <div className="hidden lg:block">
               <NavLink to="/">
                 <img src={Logo} alt="logo" />
                 <h1>Miam's</h1>
               </NavLink>
             </div>
-            <SearchBar onSearch={onSearch} />
+            {/* <SearchBar onSearch={onSearch} /> */}
             <div className="flex items-center justify-evenly md:w-3/12 ">
               {roles.includes("ROLE_ADMIN") && (
                 <NavLink to="/admin/dashboard">

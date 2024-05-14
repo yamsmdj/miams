@@ -29,8 +29,7 @@ class RecetteService
         return $this->em->getRepository(Recette::class)->find($id);
     }
 
- 
-
+    
     public function create(Recette $recette)
     {
         $newRecette = new Recette();

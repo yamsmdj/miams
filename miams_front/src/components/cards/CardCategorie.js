@@ -12,7 +12,7 @@ const CardCategorie = () => {
       .then((res) => {
         setCategories(res.data);
         setLoading(false);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
         console.error(
@@ -36,7 +36,7 @@ const CardCategorie = () => {
                 key={index}
                 className="flex flex-col justify-around w-full transform hover:scale-110 duration-500 "
               >
-                {console.log(categorie)}
+                {/* {console.log(categorie)} */}
                 <p>
                   <strong>{categorie.name}</strong>
                 </p>

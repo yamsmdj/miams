@@ -35,7 +35,15 @@ class UserController extends AbstractController
         $data = $this->serializer->serialize($user, 'json');
         return new Response($data);
     }
+    #[Route('/{id}', methods: ['GET'])]
+    public function get($id): Response
+    {
 
+        $recette = $this->userService->get($id);
+        $data = $this->serializer->serialize($recette, 'json');
+
+        return new Response($data);
+    }
     #[Route('/', methods: ['POST'])]
     public function create(Request $request): Response
     {

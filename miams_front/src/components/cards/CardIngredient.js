@@ -10,7 +10,7 @@ const CardIngredient = () => {
         .get("http://localhost:8000/api/ingredient")
         .then((res) => {
           setIngredients(res.data);
-          console.log(res.data);
+
         })
         .catch((error) => {
           console.error(
@@ -19,8 +19,6 @@ const CardIngredient = () => {
           );
         });
     }, []);
-
-
     return (
       <section>
         <div className="grid grid-cols-3 md:grid-cols-5  lg:grid-cols-8 w-10/12 m-auto">
