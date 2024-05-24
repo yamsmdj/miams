@@ -10,16 +10,10 @@ import { jwtDecode } from "jwt-decode";
 const PanelAdmin = () => {
   const [recettes, setRecettes] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [choiceDelete, setChoiceDelete] = useState(null)
-  // const recettes_id = recettes.map((rec) => (rec.id))
-
 
   useEffect(() => {
-
-    
-
     axios
       .get("http://localhost:8000/api/recette")
       .then((res) => {
@@ -35,7 +29,7 @@ const PanelAdmin = () => {
         setLoading(false);
       });
   }, []);
-
+console.log(confirmDelete);
   const handleDeleteClick = (recette) => {
     setChoiceDelete(recette)
     setConfirmDelete(true);
@@ -66,8 +60,7 @@ const PanelAdmin = () => {
     const decodedToken = jwtDecode(token);
     roles = decodedToken.roles;
   }
-console.log(roles);
-console.log(confirmDelete);
+
 return (
   roles.includes("ROLE_ADMIN") ? (
     <section className="flex w-full">

@@ -13,18 +13,9 @@ const Connexion = () => {
   const storeToken = (token) => {
     localStorage.setItem("token", token);
   };
-  // const decodeToken = (token) => {
-  //   try {
-  //     const decodedToken = jwt_decode(token);
-  //     return decodedToken;
-  //   }catch (error) {
-  //     setError( "Erreur de decodage du token:", error);
-  //     return null;
-  //   }
-  // }
-  console.log(error);
+
+
   const login = async (email, password) => {
-    // e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8000/api/user/login",
@@ -38,11 +29,11 @@ const Connexion = () => {
 
         window.location.href = "/";
       } else {
-        setError("Identifiants de connexion invalides.");
+        setError("Identifiants de connexion invalides.",error);
       }
     } catch (error) {
       setError(
-        "Échec de l'authentification. Veuillez vérifier vos identifiants."
+        "Échec de l'authentification. Veuillez vérifier vos identifiants.",error
       );
     }
   };
@@ -56,13 +47,11 @@ const Connexion = () => {
     }
   };
 
-
-
   return (
-    <section>
+    <section className=" flex-grow">
       <form onSubmit={handleLoginSubmit} className=" text-orange-500">
-       <Email setEmail={setEmail}/>
-       <Password setPassword={setPassword}/>
+        <Email setEmail={setEmail} />
+        <Password setPassword={setPassword} />
         <div className="flex flex-col">
           <NavLink to="/register">Mot de passe oublié ?</NavLink>
           <button type="submit" className="text-white bg-orange-400 my-3">

@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 
-#[Route('/api/recette')]
+#[Route('/api/recette' )]
 class RecetteController extends AbstractController
 {
     private SerializerInterface $serializer;
@@ -30,15 +30,11 @@ class RecetteController extends AbstractController
     }
 
     #[Route('/', methods: ['GET'])]
-
     public function getAll(): Response
     {
-        // // if (!$this->isGranted('ROLE_ADMIN')) {
-        // //     dd($this->json($this->getUser()));
-        // // }
-        // dd($this->getUser());
         return new Response($this->serializer->serialize($this->recetteService->getAll(), 'json', ['groups' => 'getRecette', 'getEtape']));
     }
+    
     #[Route('/{id}', methods: ['GET'])]
     public function get($id): Response
     {
@@ -50,7 +46,6 @@ class RecetteController extends AbstractController
     }
 
     #[Route('/', methods: ['POST'])]
-
     public function create(#[MapRequestPayload()] Recette $recette): Response
     {
         $recette = $this->recetteService->create($recette);
