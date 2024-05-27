@@ -13,10 +13,11 @@ const MenuBurger = () => {
     {
       title: "CATEGORIE DE RECETTES",
       items: [
-        { label: "ENTRÉE", picture: '../assets/categories/entree.webp', link: "/Entrée/1" },
+        { label: "ENTRÉE", picture: '../../assets/categories/entree.webp', link: "/Entrée/1" },
         { label: "PLATS", picture: '../../assets/categories/plats.jpg', link: "/Plats/2" },
         { label: "DESSERT", picture: '../../assets/categories/dessert.jpg', link: "/dessert/3" },
-        { label: "BOISSONS", picture: '../../assets/categories/boisson.png', link: "/boissons/4" }
+        { label: "TOUTES LES RECETTES", picture: '../../assets/categories/allrecettes.jpg', link: "/search"}
+  
       ],
       isFirstCategory: true,
     },
