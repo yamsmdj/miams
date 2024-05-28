@@ -11,12 +11,6 @@ Expliquez en détail le concept de Dependency Injection (DI) dans Symfony. Comme
 Quelles sont les différences entre les événements et les listeners dans Symfony ? Dans quelles situations choisir l'un par rapport à l'autre ?
 Pouvez-vous expliquer comment fonctionne le système de cache dans Symfony ? Quels sont les différents types de cache pris en charge et comment les configurez-vous pour optimiser les performances ?
 Parlez-nous de l'intégration de Symfony avec des outils de tests comme PHPUnit. Quels sont les principes fondamentaux des tests unitaires et fonctionnels dans un contexte Symfony ?
-Symfony propose une architecture modulaire à travers les Bundles. Pouvez-vous discuter des meilleures pratiques pour créer et organiser des Bundles réutilisables et comment les intégrer efficacement dans un projet Symfony existant ?
-Ces questions nécessitent une compréhension plus approfondie de Symfony et devraient stimuler une discussion plus technique pendant votre évaluation. Si vous avez besoin de clarifications sur l'une de ces questions, n'hésitez pas à demander !
-
-ok donne moi les réponses : 
-ChatGPT
-Bien sûr ! Voici des réponses brèves à chacune des questions :
 
 Dependency Injection (DI) : Le DI est un concept où les dépendances d'un objet sont fournies par un conteneur d'injection de dépendances plutôt que par l'objet lui-même. Dans Symfony, cela se fait via le conteneur de services, permettant une meilleure séparation des préoccupations et une plus grande flexibilité lors du remplacement des dépendances.
 
@@ -27,10 +21,6 @@ Système de Cache : Symfony propose différents systèmes de cache comme APCu, M
 Tests avec PHPUnit : PHPUnit est un framework de test unitaire pour PHP. Avec Symfony, vous pouvez tester vos contrôleurs, services, et autres composants en utilisant PHPUnit. Les tests unitaires se concentrent sur la vérification du comportement d'unités individuelles de code, tandis que les tests fonctionnels vérifient le comportement d'une fonctionnalité entière, généralement via des requêtes HTTP simulées.
 
 Bundles : Les Bundles sont des packages réutilisables qui contiennent des fonctionnalités spécifiques pour les applications Symfony. Pour créer un Bundle, vous pouvez utiliser la ligne de commande Symfony (bin/console make:bundle) et organiser votre code selon les conventions de Symfony. Pour l'intégrer dans votre projet, vous pouvez l'enregistrer dans le fichier config/bundles.php et l'utiliser comme n'importe quel autre composant Symfony.
-
-ok donnes moi encore plus dur tel un senior synfony, c'est trop simple la!
-ChatGPT
-D'accord, voici quelques questions plus avancées, telles que vous pourriez les attendre d'un senior Symfony :
 
 Explain the Symfony Event Dispatcher Component: Dive deep into how the Event Dispatcher component works under the hood. Discuss topics like event propagation, event subscribers, event priorities, and how it integrates with the overall Symfony framework architecture.
 
