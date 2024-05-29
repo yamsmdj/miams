@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const RecetteCategorie = ({title, items, isFirstCategory}) => {
     return (
-        <div className= {`${isFirstCategory ? '' : "border-l-2"} border-black pl-12 mx-aut`} >
+        <div className= {`${isFirstCategory ? '' : "border-l-2"} border-black pl-12 `} >
         <h2 className=" font-bold pb-5">{title}</h2>
         <ul>
             {items.map((item , index) =>(

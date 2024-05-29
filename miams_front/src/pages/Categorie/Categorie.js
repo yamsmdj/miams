@@ -9,7 +9,7 @@ const Categorie = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/categorie/${categorieId}`)
+      .get(`http://localhost:8000/api/categorie/${categorieId}/`)
       .then((res) => {
         setCategorie(res.data);
       })
@@ -21,10 +21,8 @@ const Categorie = () => {
       });
   }, [categorieId]);
   return (
-    <div>
-      <section>
-        {console.log(categorie)}
-        <h1 className=" w-8/12 mx-auto my-3 text-3xl text-center">{categorie.name}</h1>
+      <section className="grow">
+        <h1 className=" w-8/12 mx-auto my-3 text-3xl text-center">{categorie?.name}</h1>
         {categorie && (
           <div className="grid grid-cols-1 md:grid-cols-4 mx-auto w-8/12  font-bold text-center ">
             {categorie.recette?.map((recette, index) => (
@@ -42,7 +40,6 @@ const Categorie = () => {
           </div>
         )}
       </section>
-    </div>
   );
 };
 

@@ -47,7 +47,7 @@ const CardCategorie = () => {
                         src={`assets/categories/${categorie.name.replace(
                           /\s+/g,
                           "_"
-                        )}.jpg`}
+                        )}.webp`}
                         alt={categorie.name}
                         className="h-52 object-cover mx-auto rounded-xl "
                       />
