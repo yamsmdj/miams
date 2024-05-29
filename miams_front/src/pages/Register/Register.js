@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import eye from "../../assets/Icons/eye.svg";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import axios from "axios";
 
@@ -13,9 +13,7 @@ const Register = () => {
   const [validConfirmPwd, setValidConfirmPwd] = useState(false);
   const [eyes, setEyes] = useState(false);
 
-  const regexEmail = /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/;
-  const regexPwd =
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{6,}$/;
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +36,7 @@ const Register = () => {
   };
 
   useEffect(() => {
+    const regexEmail = /^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/;
     if (email === "") {
       setValidEmail(null);
     } else {
@@ -45,6 +44,7 @@ const Register = () => {
     }
   }, [email]);
   useEffect(() => {
+  const regexPwd =/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{6,}$/;
     if (pwd === "") {
       setValidPwd(null);
     } else {
