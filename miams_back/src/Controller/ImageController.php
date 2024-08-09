@@ -54,7 +54,7 @@ class ImageController extends AbstractController
     
         // Vérifier si le fichier existe
         if (!file_exists($filePath) || !is_readable($filePath)) {
-            return new Response('Fichier non trouvé ptit', 404);
+            return new Response('Fichier non trouvé ', 404);
         }
     
         // Récupérer le type MIME de l'image

@@ -1,8 +1,8 @@
 import axios from "axios";
 import Update from "../../assets/Icons/update.svg";
 import Delete from "../../assets/Icons/delete.svg";
-// import Cancel from "../../assets/Icons/cancel.svg";
-// import Check from "../../assets/Icons/check.svg";
+import Cancel from "../../assets/Icons/cancel.svg";
+import Check from "../../assets/Icons/check.svg";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -18,7 +18,6 @@ const PanelAdmin = () => {
       .get("http://localhost:8000/api/recette")
       .then((res) => {
         setRecettes(res.data);
-        // console.log(res.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -29,7 +28,7 @@ const PanelAdmin = () => {
         setLoading(false);
       });
   }, []);
-console.log(confirmDelete);
+
   const handleDeleteClick = (recette) => {
     setChoiceDelete(recette)
     setConfirmDelete(true);
@@ -114,8 +113,11 @@ return (
                     {choiceDelete && choiceDelete.id === recette.id ? (
                       <div className="text-center">
                         <p>Confirmer</p>
-                        <button onClick={handleConfirmDelete}>Confirmer</button>
-                        <button onClick={handleCancelDelete}>Annuler</button>
+                        <div className="flex justify-around w-1/2 m-auto">
+
+                        <button onClick={handleConfirmDelete}><img src={Check} alt="confirmer" /></button>
+                        <button onClick={handleCancelDelete}><img src={Cancel} alt="annuler" /></button>
+                        </div>
                       </div>
                     ) : (
                       <div className="text-center">

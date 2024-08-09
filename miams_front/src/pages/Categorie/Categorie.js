@@ -30,7 +30,7 @@ const Categorie = () => {
                 <p className="mt-4" >{recette.title}</p>
                 <NavLink to={`/recette/title/${recette.title.toLowerCase().replace(/\s+/g,"_")}`}>
                   <img
-                    src={`/assets/recettes/${recette.title.replace(/\s+/g,"_")}.jpg`}
+                    src={`/assets/recettes/${recette.picture}.png`}
                     alt={categorie.title}
                     className=" max-w-40 mx-auto rounded-lg m-4"
                   />

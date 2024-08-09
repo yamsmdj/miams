@@ -50,12 +50,12 @@ const Connexion = () => {
   };
 
   return (
-    <section className="grow">
-      <form onSubmit={handleLoginSubmit} className=" text-orange-500">
+    <section className="grow p-10">
+      <form onSubmit={handleLoginSubmit} className=" text-orange-500 mx-auto">
         <Email setEmail={setEmail} />
         <Password setPassword={setPassword} />
         <div className="flex flex-col">
-          <NavLink to="/register">Mot de passe oublié ?</NavLink>
+          {/* <NavLink to="/register">Mot de passe oublié ?</NavLink> */}
           {error && <span className="text-red-500">{error}</span>}
       {/* <div className="g-recaptcha" data-sitekey="6LfX_espAAAAAEbwUEU_SIZdZsV9Dze6PHo73OrJ"></div>
       <br/>

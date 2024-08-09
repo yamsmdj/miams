@@ -14,7 +14,7 @@ const Email = ( {setEmail} ) => {
 
   return (
     <div>
-      <label htmlFor="email" className="p-2 w-full">
+      <label htmlFor="email" className="p-2 mr-16 text-center">
           Email
         </label>
         <input

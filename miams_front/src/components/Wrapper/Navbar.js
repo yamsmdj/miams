@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import Logo from "../../assets/Icons/Logo.svg";
+// import Logo from "../../assets/Icons/Logo.svg";
 import Connexion from "../../assets/Icons/user.svg";
 import Logout from "../../assets/Icons/logout.svg";
 import setting from "../../assets/Icons/setting.svg";
